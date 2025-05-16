@@ -69,7 +69,7 @@ LibXml >> UTF8Toisolat1Out: out outlen: outlen in: in inlen: inlen [
 { #category : 'public' }
 LibXml >> __oldXMLWDcompatibility [
 
-	self ffiCall: #(int* __oldXMLWDcompatibility())
+	self ffiCall: #(const int* __oldXMLWDcompatibility())
 ]
 
 { #category : 'public' }
@@ -87,13 +87,13 @@ LibXml >> __xmlDefaultBufferSize [
 { #category : 'public' }
 LibXml >> __xmlDefaultSAXHandler [
 
-	self ffiCall: #(xmlSAXHandlerV1* __xmlDefaultSAXHandler())
+	self ffiCall: #(const xmlSAXHandlerV1* __xmlDefaultSAXHandler())
 ]
 
 { #category : 'public' }
 LibXml >> __xmlDefaultSAXLocator [
 
-	self ffiCall: #(xmlSAXLocator* __xmlDefaultSAXLocator())
+	self ffiCall: #(const xmlSAXLocator* __xmlDefaultSAXLocator())
 ]
 
 { #category : 'public' }
@@ -171,7 +171,7 @@ LibXml >> __xmlOutputBufferCreateFilenameValue [
 { #category : 'public' }
 LibXml >> __xmlParserDebugEntities [
 
-	self ffiCall: #(int* __xmlParserDebugEntities())
+	self ffiCall: #(const int* __xmlParserDebugEntities())
 ]
 
 { #category : 'public' }
@@ -255,7 +255,9 @@ LibXml >> isolat1ToUTF8Out: out outlen: outlen in: in inlen: inlen [
 { #category : 'accessing - platform' }
 LibXml >> macLibraryName [
 
-	^ FFIMacLibraryFinder findLibrary: 'libxml.dylib'
+	^ FFIMacLibraryFinder new
+		userPaths: #('./CIG/lib');
+		findLibrary: 'libxml.dylib'
 ]
 
 { #category : 'accessing' }
@@ -269,13 +271,17 @@ LibXml >> runner [
 { #category : 'accessing - platform' }
 LibXml >> unix64LibraryName [
 
-	^ FFIUnix64LibraryFinder findLibrary: 'libxml2.so'
+	^ FFIUnix64LibraryFinder new
+		userPaths: #('./CIG/lib');
+		findLibrary: 'libxml2.so'
 ]
 
 { #category : 'accessing - platform' }
 LibXml >> win32LibraryName [
 
-	^ FFIWindowsLibraryFinder findLibrary: 'libxml.dll'
+	^ FFIWindowsLibraryFinder new
+		userPaths: #('./CIG/lib');
+		findLibrary: 'xml.dll'
 ]
 
 { #category : 'public' }
@@ -321,9 +327,21 @@ LibXml >> xmlAddEncodingAliasName: name alias: alias [
 ]
 
 { #category : 'public' }
+LibXml >> xmlAddEntityDoc: doc extSubset: extSubset name: name type: type ExternalID: ExternalID SystemID: SystemID content: content out: out [
+
+	self ffiCall: #(int xmlAddEntity(xmlDocPtr doc, int extSubset, const xmlChar* name, int type, const xmlChar* ExternalID, const xmlChar* SystemID, const xmlChar* content, xmlEntityPtr* out))
+]
+
+{ #category : 'public' }
 LibXml >> xmlAddIDCtxt: ctxt doc: doc value: value attr: attr [
 
 	self ffiCall: #(xmlIDPtr xmlAddID(xmlValidCtxtPtr ctxt, xmlDocPtr doc, const xmlChar* value, xmlAttrPtr attr))
+]
+
+{ #category : 'public' }
+LibXml >> xmlAddIDSafeAttr: attr value: value [
+
+	self ffiCall: #(int xmlAddIDSafe(xmlAttrPtr attr, const xmlChar* value))
 ]
 
 { #category : 'public' }
@@ -497,19 +515,19 @@ LibXml >> xmlBufGetNodeContentBuf: buf cur: cur [
 { #category : 'public' }
 LibXml >> xmlBufNodeDumpBuf: buf doc: doc cur: cur level: level format: format [
 
-	self ffiCall: #(int xmlBufNodeDump(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level, int format))
+	self ffiCall: #(size_t xmlBufNodeDump(xmlBufPtr buf, xmlDocPtr doc, xmlNodePtr cur, int level, int format))
 ]
 
 { #category : 'public' }
 LibXml >> xmlBufShrinkBuf: buf len: len [
 
-	self ffiCall: #(int xmlBufShrink(xmlBufPtr buf, size_t len))
+	self ffiCall: #(size_t xmlBufShrink(xmlBufPtr buf, size_t len))
 ]
 
 { #category : 'public' }
 LibXml >> xmlBufUse: buf [
 
-	self ffiCall: #(int xmlBufUse(const xmlBufPtr buf))
+	self ffiCall: #(size_t xmlBufUse(xmlBufPtr buf))
 ]
 
 { #category : 'public' }
@@ -664,6 +682,7 @@ LibXml >> xmlCharEncInFuncHandler: handler out: out in: in [
 
 { #category : 'public' }
 LibXml >> xmlCharEncOutFuncHandler: handler out: out in: in [
+	"/** DOC_ENABLE */"
 
 	self ffiCall: #(int xmlCharEncOutFunc(xmlCharEncodingHandler* handler, _xmlBuffer* out, _xmlBuffer* in))
 ]
@@ -922,6 +941,12 @@ LibXml >> xmlCtxtGetLastError: ctx [
 ]
 
 { #category : 'public' }
+LibXml >> xmlCtxtParseDocumentCtxt: ctxt input: input [
+
+	self ffiCall: #(xmlDocPtr xmlCtxtParseDocument(xmlParserCtxtPtr ctxt, xmlParserInputPtr input))
+]
+
+{ #category : 'public' }
 LibXml >> xmlCtxtReadDocCtxt: ctxt cur: cur URL: URL encoding: encoding options: options [
 
 	self ffiCall: #(xmlDocPtr xmlCtxtReadDoc(xmlParserCtxtPtr ctxt, const xmlChar* cur, const char* URL, const char* encoding, int options))
@@ -970,9 +995,21 @@ LibXml >> xmlCtxtResetPushCtxt: ctxt chunk: chunk size: size filename: filename 
 ]
 
 { #category : 'public' }
+LibXml >> xmlCtxtSetErrorHandlerCtxt: ctxt handler: handler data: data [
+
+	self ffiCall: #(void xmlCtxtSetErrorHandler(xmlParserCtxtPtr ctxt, xmlStructuredErrorFunc handler, void* data))
+]
+
+{ #category : 'public' }
 LibXml >> xmlCtxtSetMaxAmplificationCtxt: ctxt maxAmpl: maxAmpl [
 
 	self ffiCall: #(void xmlCtxtSetMaxAmplification(xmlParserCtxtPtr ctxt, uint maxAmpl))
+]
+
+{ #category : 'public' }
+LibXml >> xmlCtxtSetOptionsCtxt: ctxt options: options [
+
+	self ffiCall: #(int xmlCtxtSetOptions(xmlParserCtxtPtr ctxt, int options))
 ]
 
 { #category : 'public' }
@@ -1074,7 +1111,7 @@ LibXml >> xmlDictFree: dict [
 { #category : 'public' }
 LibXml >> xmlDictGetUsage: dict [
 
-	self ffiCall: #(int xmlDictGetUsage(xmlDictPtr dict))
+	self ffiCall: #(size_t xmlDictGetUsage(xmlDictPtr dict))
 ]
 
 { #category : 'public' }
@@ -1104,7 +1141,7 @@ LibXml >> xmlDictReference: dict [
 { #category : 'public' }
 LibXml >> xmlDictSetLimitDict: dict limit: limit [
 
-	self ffiCall: #(int xmlDictSetLimit(xmlDictPtr dict, size_t limit))
+	self ffiCall: #(size_t xmlDictSetLimit(xmlDictPtr dict, size_t limit))
 ]
 
 { #category : 'public' }
@@ -1282,6 +1319,12 @@ LibXml >> xmlFindCharEncodingHandler: name [
 LibXml >> xmlFirstElementChild: parent [
 
 	self ffiCall: #(xmlNodePtr xmlFirstElementChild(xmlNodePtr parent))
+]
+
+{ #category : 'public' }
+LibXml >> xmlFormatErrorErr: err channel: channel data: data [
+
+	self ffiCall: #(void xmlFormatError(const xmlError* err, xmlGenericErrorFunc channel, void* data))
 ]
 
 { #category : 'public' }
@@ -1597,6 +1640,12 @@ LibXml >> xmlGetNsListDoc: doc node: node [
 ]
 
 { #category : 'public' }
+LibXml >> xmlGetNsListSafeDoc: doc node: node out: out [
+
+	self ffiCall: #(int xmlGetNsListSafe(const xmlDoc* doc, const xmlNode* node, xmlNsPtr** out))
+]
+
+{ #category : 'public' }
 LibXml >> xmlGetNsPropNode: node name: name nameSpace: nameSpace [
 
 	self ffiCall: #(xmlChar* xmlGetNsProp(const xmlNode* node, const xmlChar* name, const xmlChar* nameSpace))
@@ -1657,6 +1706,18 @@ LibXml >> xmlHasPropNode: node name: name [
 ]
 
 { #category : 'public' }
+LibXml >> xmlHashAdd2Hash: hash name: name name2: name2 userdata: userdata [
+
+	self ffiCall: #(int xmlHashAdd2(xmlHashTablePtr hash, const xmlChar* name, const xmlChar* name2, void* userdata))
+]
+
+{ #category : 'public' }
+LibXml >> xmlHashAdd3Hash: hash name: name name2: name2 name3: name3 userdata: userdata [
+
+	self ffiCall: #(int xmlHashAdd3(xmlHashTablePtr hash, const xmlChar* name, const xmlChar* name2, const xmlChar* name3, void* userdata))
+]
+
+{ #category : 'public' }
 LibXml >> xmlHashAddEntry2Hash: hash name: name name2: name2 userdata: userdata [
 
 	self ffiCall: #(int xmlHashAddEntry2(xmlHashTablePtr hash, const xmlChar* name, const xmlChar* name2, void* userdata))
@@ -1675,9 +1736,21 @@ LibXml >> xmlHashAddEntryHash: hash name: name userdata: userdata [
 ]
 
 { #category : 'public' }
+LibXml >> xmlHashAddHash: hash name: name userdata: userdata [
+
+	self ffiCall: #(int xmlHashAdd(xmlHashTablePtr hash, const xmlChar* name, void* userdata))
+]
+
+{ #category : 'public' }
 LibXml >> xmlHashCopyHash: hash copy: copy [
 
 	self ffiCall: #(xmlHashTablePtr xmlHashCopy(xmlHashTablePtr hash, xmlHashCopier copy))
+]
+
+{ #category : 'public' }
+LibXml >> xmlHashCopySafeHash: hash copy: copy dealloc: dealloc [
+
+	self ffiCall: #(xmlHashTablePtr xmlHashCopySafe(xmlHashTablePtr hash, xmlHashCopier copy, xmlHashDeallocator dealloc))
 ]
 
 { #category : 'public' }
@@ -1972,7 +2045,7 @@ LibXml >> xmlListClear: l [
 { #category : 'public' }
 LibXml >> xmlListCopyCur: cur old: old [
 
-	self ffiCall: #(int xmlListCopy(xmlListPtr cur, const xmlListPtr old))
+	self ffiCall: #(int xmlListCopy(xmlListPtr cur, xmlListPtr old))
 ]
 
 { #category : 'public' }
@@ -1990,7 +2063,7 @@ LibXml >> xmlListDelete: l [
 { #category : 'public' }
 LibXml >> xmlListDup: old [
 
-	self ffiCall: #(xmlListPtr xmlListDup(const xmlListPtr old))
+	self ffiCall: #(xmlListPtr xmlListDup(xmlListPtr old))
 ]
 
 { #category : 'public' }
@@ -2120,6 +2193,12 @@ LibXml >> xmlLockLibrary [
 ]
 
 { #category : 'public' }
+LibXml >> xmlLookupCharEncodingHandlerEnc: enc out: out [
+
+	self ffiCall: #(int xmlLookupCharEncodingHandler(xmlCharEncoding enc, xmlCharEncodingHandlerPtr* out))
+]
+
+{ #category : 'public' }
 LibXml >> xmlMallocAtomicLocSize: size file: file line: line [
 
 	self ffiCall: #(void* xmlMallocAtomicLoc(size_t size, const char* file, int line))
@@ -2188,7 +2267,7 @@ LibXml >> xmlMemShowFp: fp nr: nr [
 { #category : 'public' }
 LibXml >> xmlMemSize: ptr [
 
-	self ffiCall: #(int xmlMemSize(void* ptr))
+	self ffiCall: #(size_t xmlMemSize(void* ptr))
 ]
 
 { #category : 'public' }
@@ -2518,13 +2597,13 @@ LibXml >> xmlNoNetExternalEntityLoaderURL: URL ID: ID ctxt: ctxt [
 { #category : 'public' }
 LibXml >> xmlNodeAddContentCur: cur content: content [
 
-	self ffiCall: #(void xmlNodeAddContent(xmlNodePtr cur, const xmlChar* content))
+	self ffiCall: #(int xmlNodeAddContent(xmlNodePtr cur, const xmlChar* content))
 ]
 
 { #category : 'public' }
 LibXml >> xmlNodeAddContentLenCur: cur content: content len: len [
 
-	self ffiCall: #(void xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar* content, int len))
+	self ffiCall: #(int xmlNodeAddContentLen(xmlNodePtr cur, const xmlChar* content, int len))
 ]
 
 { #category : 'public' }
@@ -2546,9 +2625,21 @@ LibXml >> xmlNodeDumpOutputBuf: buf doc: doc cur: cur level: level format: forma
 ]
 
 { #category : 'public' }
+LibXml >> xmlNodeGetAttrValueNode: node name: name nsUri: nsUri out: out [
+
+	self ffiCall: #(int xmlNodeGetAttrValue(const xmlNode* node, const xmlChar* name, const xmlChar* nsUri, xmlChar** out))
+]
+
+{ #category : 'public' }
 LibXml >> xmlNodeGetBaseDoc: doc cur: cur [
 
 	self ffiCall: #(xmlChar* xmlNodeGetBase(const xmlDoc* doc, const xmlNode* cur))
+]
+
+{ #category : 'public' }
+LibXml >> xmlNodeGetBaseSafeDoc: doc cur: cur baseOut: baseOut [
+
+	self ffiCall: #(int xmlNodeGetBaseSafe(const xmlDoc* doc, const xmlNode* cur, xmlChar** baseOut))
 ]
 
 { #category : 'public' }
@@ -2590,25 +2681,25 @@ LibXml >> xmlNodeListGetStringDoc: doc list: list inLine: inLine [
 { #category : 'public' }
 LibXml >> xmlNodeSetBaseCur: cur uri: uri [
 
-	self ffiCall: #(void xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri))
+	self ffiCall: #(int xmlNodeSetBase(xmlNodePtr cur, const xmlChar* uri))
 ]
 
 { #category : 'public' }
 LibXml >> xmlNodeSetContentCur: cur content: content [
 
-	self ffiCall: #(void xmlNodeSetContent(xmlNodePtr cur, const xmlChar* content))
+	self ffiCall: #(int xmlNodeSetContent(xmlNodePtr cur, const xmlChar* content))
 ]
 
 { #category : 'public' }
 LibXml >> xmlNodeSetContentLenCur: cur content: content len: len [
 
-	self ffiCall: #(void xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar* content, int len))
+	self ffiCall: #(int xmlNodeSetContentLen(xmlNodePtr cur, const xmlChar* content, int len))
 ]
 
 { #category : 'public' }
 LibXml >> xmlNodeSetLangCur: cur lang: lang [
 
-	self ffiCall: #(void xmlNodeSetLang(xmlNodePtr cur, const xmlChar* lang))
+	self ffiCall: #(int xmlNodeSetLang(xmlNodePtr cur, const xmlChar* lang))
 ]
 
 { #category : 'public' }
@@ -2620,13 +2711,19 @@ LibXml >> xmlNodeSetNameCur: cur name: name [
 { #category : 'public' }
 LibXml >> xmlNodeSetSpacePreserveCur: cur val: val [
 
-	self ffiCall: #(void xmlNodeSetSpacePreserve(xmlNodePtr cur, int val))
+	self ffiCall: #(int xmlNodeSetSpacePreserve(xmlNodePtr cur, int val))
 ]
 
 { #category : 'public' }
 LibXml >> xmlNormalizeWindowsPath: path [
 
 	self ffiCall: #(xmlChar* xmlNormalizeWindowsPath(const xmlChar* path))
+]
+
+{ #category : 'public' }
+LibXml >> xmlOpenCharEncodingHandlerName: name output: output out: out [
+
+	self ffiCall: #(int xmlOpenCharEncodingHandler(const char* name, int output, xmlCharEncodingHandlerPtr* out))
 ]
 
 { #category : 'public' }
@@ -2686,7 +2783,7 @@ LibXml >> xmlOutputBufferGetContent: out [
 { #category : 'public' }
 LibXml >> xmlOutputBufferGetSize: out [
 
-	self ffiCall: #(int xmlOutputBufferGetSize(xmlOutputBufferPtr out))
+	self ffiCall: #(size_t xmlOutputBufferGetSize(xmlOutputBufferPtr out))
 ]
 
 { #category : 'public' }
@@ -2794,19 +2891,19 @@ LibXml >> xmlParseMemoryBuffer: buffer size: size [
 { #category : 'public' }
 LibXml >> xmlParserAddNodeInfoCtxt: ctxt info: info [
 
-	self ffiCall: #(void xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt, const xmlParserNodeInfoPtr info))
+	self ffiCall: #(void xmlParserAddNodeInfo(xmlParserCtxtPtr ctxt, xmlParserNodeInfoPtr info))
 ]
 
 { #category : 'public' }
 LibXml >> xmlParserFindNodeInfoCtxt: ctxt node: node [
 
-	self ffiCall: #(const xmlParserNodeInfo* xmlParserFindNodeInfo(const xmlParserCtxtPtr ctxt, const xmlNodePtr node))
+	self ffiCall: #(const xmlParserNodeInfo* xmlParserFindNodeInfo(xmlParserCtxtPtr ctxt, xmlNodePtr node))
 ]
 
 { #category : 'public' }
 LibXml >> xmlParserFindNodeInfoIndexSeq: seq node: node [
 
-	self ffiCall: #(ulong xmlParserFindNodeInfoIndex(const xmlParserNodeInfoSeqPtr seq, const xmlNodePtr node))
+	self ffiCall: #(ulong xmlParserFindNodeInfoIndex(xmlParserNodeInfoSeqPtr seq, xmlNodePtr node))
 ]
 
 { #category : 'public' }
@@ -2895,6 +2992,7 @@ LibXml >> xmlParserPrintFileContext: input [
 
 { #category : 'public' }
 LibXml >> xmlParserPrintFileInfo: input [
+	"/** DOC_ENABLE */"
 
 	self ffiCall: #(void xmlParserPrintFileInfo(_xmlParserInput* input))
 ]
@@ -3863,7 +3961,7 @@ LibXml >> xmlSetGenericErrorFuncCtx: ctx handler: handler [
 { #category : 'public' }
 LibXml >> xmlSetListDocList: list doc: doc [
 
-	self ffiCall: #(void xmlSetListDoc(xmlNodePtr list, xmlDocPtr doc))
+	self ffiCall: #(int xmlSetListDoc(xmlNodePtr list, xmlDocPtr doc))
 ]
 
 { #category : 'public' }
@@ -3893,7 +3991,7 @@ LibXml >> xmlSetStructuredErrorFuncCtx: ctx handler: handler [
 { #category : 'public' }
 LibXml >> xmlSetTreeDocTree: tree doc: doc [
 
-	self ffiCall: #(void xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc))
+	self ffiCall: #(int xmlSetTreeDoc(xmlNodePtr tree, xmlDocPtr doc))
 ]
 
 { #category : 'public' }
@@ -4188,6 +4286,12 @@ LibXml >> xmlTextReaderGetAttributeReader: reader name: name [
 LibXml >> xmlTextReaderGetErrorHandlerReader: reader f: f arg: arg [
 
 	self ffiCall: #(void xmlTextReaderGetErrorHandler(xmlTextReaderPtr reader, xmlTextReaderErrorFunc* f, void** arg))
+]
+
+{ #category : 'public' }
+LibXml >> xmlTextReaderGetLastError: reader [
+
+	self ffiCall: #(const xmlError* xmlTextReaderGetLastError(xmlTextReaderPtr reader))
 ]
 
 { #category : 'public' }
@@ -4488,6 +4592,12 @@ LibXml >> xmlTextReaderValue: reader [
 LibXml >> xmlTextReaderXmlLang: reader [
 
 	self ffiCall: #(xmlChar* xmlTextReaderXmlLang(xmlTextReaderPtr reader))
+]
+
+{ #category : 'public' }
+LibXml >> xmlTextWriterClose: writer [
+
+	self ffiCall: #(int xmlTextWriterClose(xmlTextWriterPtr writer))
 ]
 
 { #category : 'public' }

@@ -18,6 +18,7 @@ Class {
 		'XML_PARSE_NONET',
 		'XML_PARSE_NOWARNING',
 		'XML_PARSE_NOXINCNODE',
+		'XML_PARSE_NO_XXE',
 		'XML_PARSE_NSCLEAN',
 		'XML_PARSE_OLD10',
 		'XML_PARSE_OLDSAX',
@@ -128,6 +129,12 @@ XmlParserOption class >> XML_PARSE_NOXINCNODE [
 ]
 
 { #category : 'accessing enum' }
+XmlParserOption class >> XML_PARSE_NO_XXE [
+	"This method was automatically generated"
+	^ XML_PARSE_NO_XXE
+]
+
+{ #category : 'accessing enum' }
 XmlParserOption class >> XML_PARSE_NSCLEAN [
 	"This method was automatically generated"
 	^ XML_PARSE_NSCLEAN
@@ -195,5 +202,6 @@ XmlParserOption class >> enumDecl [
 	XML_PARSE_HUGE 524288
 	XML_PARSE_OLDSAX 1048576
 	XML_PARSE_IGNORE_ENC 2097152
-	XML_PARSE_BIG_LINES 4194304 )
+	XML_PARSE_BIG_LINES 4194304
+	XML_PARSE_NO_XXE 8388608 )
 ]

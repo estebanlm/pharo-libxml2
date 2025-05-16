@@ -94,6 +94,7 @@ Class {
 		'XML_DTD_UNKNOWN_NOTATION',
 		'XML_DTD_XMLID_TYPE',
 		'XML_DTD_XMLID_VALUE',
+		'XML_ERR_ARGUMENT',
 		'XML_ERR_ATTLIST_NOT_FINISHED',
 		'XML_ERR_ATTLIST_NOT_STARTED',
 		'XML_ERR_ATTRIBUTE_NOT_FINISHED',
@@ -140,6 +141,7 @@ Class {
 		'XML_ERR_GT_REQUIRED',
 		'XML_ERR_HYPHEN_IN_COMMENT',
 		'XML_ERR_INTERNAL_ERROR',
+		'XML_ERR_INT_SUBSET_NOT_FINISHED',
 		'XML_ERR_INVALID_CHAR',
 		'XML_ERR_INVALID_CHARREF',
 		'XML_ERR_INVALID_DEC_CHARREF',
@@ -177,12 +179,15 @@ Class {
 		'XML_ERR_PI_NOT_FINISHED',
 		'XML_ERR_PI_NOT_STARTED',
 		'XML_ERR_PUBID_REQUIRED',
+		'XML_ERR_REDECL_PREDEF_ENTITY',
 		'XML_ERR_RESERVED_XML_NAME',
+		'XML_ERR_RESOURCE_LIMIT',
 		'XML_ERR_SEPARATOR_REQUIRED',
 		'XML_ERR_SPACE_REQUIRED',
 		'XML_ERR_STANDALONE_VALUE',
 		'XML_ERR_STRING_NOT_CLOSED',
 		'XML_ERR_STRING_NOT_STARTED',
+		'XML_ERR_SYSTEM',
 		'XML_ERR_TAG_NAME_MISMATCH',
 		'XML_ERR_TAG_NOT_FINISHED',
 		'XML_ERR_UNDECLARED_ENTITY',
@@ -269,6 +274,7 @@ Class {
 		'XML_IO_NETWORK_ATTEMPT',
 		'XML_IO_NO_INPUT',
 		'XML_IO_UNKNOWN',
+		'XML_IO_UNSUPPORTED_PROTOCOL',
 		'XML_IO_WRITE',
 		'XML_MODULE_CLOSE',
 		'XML_MODULE_OPEN',
@@ -1298,6 +1304,12 @@ XmlParserErrors class >> XML_DTD_XMLID_VALUE [
 ]
 
 { #category : 'accessing enum' }
+XmlParserErrors class >> XML_ERR_ARGUMENT [
+	"This method was automatically generated"
+	^ XML_ERR_ARGUMENT
+]
+
+{ #category : 'accessing enum' }
 XmlParserErrors class >> XML_ERR_ATTLIST_NOT_FINISHED [
 	"This method was automatically generated"
 	^ XML_ERR_ATTLIST_NOT_FINISHED
@@ -1574,6 +1586,12 @@ XmlParserErrors class >> XML_ERR_INTERNAL_ERROR [
 ]
 
 { #category : 'accessing enum' }
+XmlParserErrors class >> XML_ERR_INT_SUBSET_NOT_FINISHED [
+	"This method was automatically generated"
+	^ XML_ERR_INT_SUBSET_NOT_FINISHED
+]
+
+{ #category : 'accessing enum' }
 XmlParserErrors class >> XML_ERR_INVALID_CHAR [
 	"This method was automatically generated"
 	^ XML_ERR_INVALID_CHAR
@@ -1796,9 +1814,21 @@ XmlParserErrors class >> XML_ERR_PUBID_REQUIRED [
 ]
 
 { #category : 'accessing enum' }
+XmlParserErrors class >> XML_ERR_REDECL_PREDEF_ENTITY [
+	"This method was automatically generated"
+	^ XML_ERR_REDECL_PREDEF_ENTITY
+]
+
+{ #category : 'accessing enum' }
 XmlParserErrors class >> XML_ERR_RESERVED_XML_NAME [
 	"This method was automatically generated"
 	^ XML_ERR_RESERVED_XML_NAME
+]
+
+{ #category : 'accessing enum' }
+XmlParserErrors class >> XML_ERR_RESOURCE_LIMIT [
+	"This method was automatically generated"
+	^ XML_ERR_RESOURCE_LIMIT
 ]
 
 { #category : 'accessing enum' }
@@ -1829,6 +1859,12 @@ XmlParserErrors class >> XML_ERR_STRING_NOT_CLOSED [
 XmlParserErrors class >> XML_ERR_STRING_NOT_STARTED [
 	"This method was automatically generated"
 	^ XML_ERR_STRING_NOT_STARTED
+]
+
+{ #category : 'accessing enum' }
+XmlParserErrors class >> XML_ERR_SYSTEM [
+	"This method was automatically generated"
+	^ XML_ERR_SYSTEM
 ]
 
 { #category : 'accessing enum' }
@@ -2345,6 +2381,12 @@ XmlParserErrors class >> XML_IO_NO_INPUT [
 XmlParserErrors class >> XML_IO_UNKNOWN [
 	"This method was automatically generated"
 	^ XML_IO_UNKNOWN
+]
+
+{ #category : 'accessing enum' }
+XmlParserErrors class >> XML_IO_UNSUPPORTED_PROTOCOL [
+	"This method was automatically generated"
+	^ XML_IO_UNSUPPORTED_PROTOCOL
 ]
 
 { #category : 'accessing enum' }
@@ -5285,6 +5327,11 @@ XmlParserErrors class >> enumDecl [
 	XML_ERR_USER_STOP 111
 	XML_ERR_COMMENT_ABRUPTLY_ENDED 112
 	XML_WAR_ENCODING_MISMATCH 113
+	XML_ERR_RESOURCE_LIMIT 114
+	XML_ERR_ARGUMENT 115
+	XML_ERR_SYSTEM 116
+	XML_ERR_REDECL_PREDEF_ENTITY 117
+	XML_ERR_INT_SUBSET_NOT_FINISHED 118
 	XML_NS_ERR_XML_NAMESPACE 200
 	XML_NS_ERR_UNDEFINED_NAMESPACE 201
 	XML_NS_ERR_QNAME 202
@@ -5547,6 +5594,7 @@ XmlParserErrors class >> enumDecl [
 	XML_IO_EADDRINUSE 1554
 	XML_IO_EALREADY 1555
 	XML_IO_EAFNOSUPPORT 1556
+	XML_IO_UNSUPPORTED_PROTOCOL 1557
 	XML_XINCLUDE_RECURSION 1600
 	XML_XINCLUDE_PARSE_VALUE 1601
 	XML_XINCLUDE_ENTITY_DEF_MISMATCH 1602

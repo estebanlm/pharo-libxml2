@@ -5,6 +5,7 @@ Class {
 		'OFFSET_ATYPE',
 		'OFFSET_CHILDREN',
 		'OFFSET_DOC',
+		'OFFSET_ID',
 		'OFFSET_LAST',
 		'OFFSET_NAME',
 		'OFFSET_NEXT',
@@ -35,7 +36,8 @@ Xml_xmlAttr class >> fieldsDesc [
 	_xmlDoc* doc;
 	xmlNs* ns;
 	xmlAttributeType atype;
-	void* psvi
+	void* psvi;
+	_xmlID* id
 	)
 ]
 
@@ -85,6 +87,18 @@ Xml_xmlAttr >> doc [
 Xml_xmlAttr >> doc: anObject [
 	"This method was automatically generated"
 	handle pointerAt: OFFSET_DOC put: anObject getHandle.
+]
+
+{ #category : 'accessing - structure variables' }
+Xml_xmlAttr >> id [
+	"This method was automatically generated"
+	^Xml_xmlID fromHandle: (handle pointerAt: OFFSET_ID)
+]
+
+{ #category : 'accessing - structure variables' }
+Xml_xmlAttr >> id: anObject [
+	"This method was automatically generated"
+	handle pointerAt: OFFSET_ID put: anObject getHandle.
 ]
 
 { #category : 'accessing - structure variables' }

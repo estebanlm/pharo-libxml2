@@ -21,6 +21,8 @@ Class {
 		'OFFSET_ENDCHECKSTATE',
 		'OFFSET_ENTITY',
 		'OFFSET_ERRNO',
+		'OFFSET_ERRORCTXT',
+		'OFFSET_ERRORHANDLER',
 		'OFFSET_EXTERNAL',
 		'OFFSET_EXTSUBSYSTEM',
 		'OFFSET_EXTSUBURI',
@@ -203,7 +205,9 @@ Xml_xmlParserCtxt class >> fieldsDesc [
 	uint maxAmpl;
 	xmlParserNsData* nsdb;
 	uint attrHashMax;
-	xmlAttrHashBucket* attrHash
+	xmlAttrHashBucket* attrHash;
+	xmlStructuredErrorFunc errorHandler;
+	void* errorCtxt
 	)
 ]
 
@@ -445,6 +449,34 @@ Xml_xmlParserCtxt >> errNo [
 Xml_xmlParserCtxt >> errNo: anObject [
 	"This method was automatically generated"
 	handle signedLongAt: OFFSET_ERRNO put: anObject
+]
+
+{ #category : 'accessing - structure variables' }
+Xml_xmlParserCtxt >> errorCtxt [
+	"This method was automatically generated"
+	^ExternalData fromHandle: (handle pointerAt: OFFSET_ERRORCTXT) type: ExternalType void asPointerType
+]
+
+{ #category : 'accessing - structure variables' }
+Xml_xmlParserCtxt >> errorCtxt: anObject [
+	"This method was automatically generated"
+	handle pointerAt: OFFSET_ERRORCTXT put: anObject getHandle.
+]
+
+{ #category : 'accessing - structure variables' }
+Xml_xmlParserCtxt >> errorHandler [
+	"This method was automatically generated"
+	^FFICallback forAddress: ((handle pointerAt: OFFSET_ERRORHANDLER) asInteger)
+]
+
+{ #category : 'accessing - structure variables' }
+Xml_xmlParserCtxt >> errorHandler: anObject [
+	"This method was automatically generated"
+	handle 
+		pointerAt: OFFSET_ERRORHANDLER
+		put: (anObject 
+			ifNotNil: [ anObject thunk asExternalAddress ]
+			ifNil: [ ExternalAddress null ])
 ]
 
 { #category : 'accessing - structure variables' }
